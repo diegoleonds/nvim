@@ -1,15 +1,47 @@
 return {
 	"mfussenegger/nvim-dap",
 	dependencies = {
-    "nvim-neotest/nvim-nio",
+		"nvim-neotest/nvim-nio",
 		"rcarriga/nvim-dap-ui",
-    "mfussenegger/nvim-jdtls"
+		"mfussenegger/nvim-jdtls",
 	},
 	config = function()
 		local dap = require("dap")
 		local dapui = require("dapui")
 
-    require("dapui").setup()
+		require("dapui").setup()
+
+		dap.configurations.dart = {
+			{
+				type = "dart",
+				request = "launch",
+				name = "Launch dart",
+				dartSdkPath = "~/dev/flutter/bin/cache/dart-sdk/bin/dart", -- ensure this is correct
+				flutterSdkPath = "~/dev/flutter/bin/flutter", -- ensure this is correct
+				program = "${workspaceFolder}/lib/main.dart", -- ensure this is correct
+				cwd = "${workspaceFolder}",
+			},
+			{
+				type = "flutter",
+				request = "launch",
+				name = "Launch flutter",
+				dartSdkPath = "~/dev/flutter/bin/cache/dart-sdk/bin/dart", -- ensure this is correct
+				flutterSdkPath = "~/dev/flutter/bin/flutter", -- ensure this is correct
+				program = "${workspaceFolder}/lib/main.dart", -- ensure this is correct
+				cwd = "${workspaceFolder}",
+			},
+		}
+
+		dap.adapters.dart = {
+			type = "executable",
+			command = "dart",
+			args = { "debug_adapter" },
+		}
+		dap.adapters.flutter = {
+			type = "executable",
+			command = "flutter",
+			args = { "debug_adapter" },
+		}
 
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()

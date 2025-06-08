@@ -5,7 +5,15 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+			vim.keymap.set("n", "<leader><leader>", builtin.find_files, { desc = "[S]earch [F]iles" })
+
+			vim.keymap.set("n", "<leader>sb", function()
+				builtin.buffers({ sort_mru = true, ignore_current_buffer = true })
+			end, { desc = "[S]earch [B]uffers" })
+
+			vim.keymap.set("n", "<leader>sm", function()
+				builtin.lsp_document_symbols({ symbols = "function" })
+			end, { desc = "[S]earch [M]ethods" })
 
 			vim.keymap.set("n", "<leader>su", function()
 				builtin.lsp_references({ include_declaration = false })
@@ -21,6 +29,10 @@ return {
 			vim.keymap.set("n", "<leader>sn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
+
+			vim.keymap.set("n", "<leader>sc", function()
+				builtin.find_files({ cwd = "~/.config" })
+			end, { desc = "[S]earch [C]onfig files" })
 		end,
 	},
 	{
